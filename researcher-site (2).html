@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#101214">
+<title>櫻井 霞穏 — 死生学・グリーフケア研究</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sumi:#101214;        /* 地:濃い青墨 */
+    --surface:#191c1f;     /* 面 */
+    --surface-2:#202428;   /* カード */
+    --ink:#f2f4f6;         /* 文字:ほぼ白でくっきり */
+    --muted:#b9c1c7;       /* 補助文字も明るく */
+    --tomoshibi:#d6dee3;   /* 白銀:アクセント */
+    --line:rgba(242,244,246,.14);
+    --serif:"Shippori Mincho",serif;
+    --sans:"Zen Kaku Gothic New",sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;color-scheme:dark;background:var(--sumi)}
+  body{
+    background:var(--sumi) !important;
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:400;
+    line-height:1.9;
+    letter-spacing:.04em;
+    font-size:15px;
+  }
+  ::selection{background:rgba(204,214,220,.25)}
+  a{color:var(--tomoshibi);text-decoration:none}
+  a:hover{text-decoration:underline;text-underline-offset:4px}
+
+  /* ===== レイアウト ===== */
+  .layout{display:flex;min-height:100vh}
+
+  /* ===== サイドバー ===== */
+  .sidebar{
+    width:248px;
+    flex-shrink:0;
+    position:sticky;
+    top:0;
+    height:100vh;
+    padding:56px 36px 40px;
+    border-right:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    background:var(--sumi);
+  }
+  .site-name{
+    font-family:var(--serif);
+    font-size:22px;
+    font-weight:500;
+    letter-spacing:.22em;
+    line-height:1.5;
+  }
+  .site-name a{color:var(--ink)}
+  .site-name a:hover{text-decoration:none;color:var(--tomoshibi)}
+  .site-sub{
+    margin-top:10px;
+    font-size:11px;
+    letter-spacing:.18em;
+    color:var(--muted);
+  }
+  .nav{margin-top:56px;display:flex;flex-direction:column;gap:2px}
+  .nav button{
+    all:unset;
+    cursor:pointer;
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    padding:11px 8px;
+    font-family:var(--sans);
+    font-size:13px;
+    letter-spacing:.22em;
+    color:var(--muted);
+    border-left:1px solid transparent;
+    transition:color .25s,border-color .25s,padding-left .25s;
+  }
+  .nav button .jp{font-size:10px;letter-spacing:.28em;opacity:.65}
+  .nav button:hover{color:var(--ink)}
+  .nav button:focus-visible{outline:1px solid var(--tomoshibi);outline-offset:2px}
+  .nav button.active{
+    color:var(--tomoshibi);
+    border-left-color:var(--tomoshibi);
+    padding-left:16px;
+  }
+  .sidebar-foot{
+    margin-top:auto;
+    font-size:10px;
+    letter-spacing:.14em;
+    color:var(--muted);
+    line-height:2;
+  }
+
+  /* ===== メイン ===== */
+  .main{flex:1;min-width:0}
+  .page{display:none;animation:fade .5s ease both}
+  .page.visible{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){
+    .page{animation:none}
+    html{scroll-behavior:auto}
+  }
+  .inner{max-width:840px;padding:72px 64px 96px;margin:0 auto}
+
+  /* ===== ホーム:ヒーロー ===== */
+  .hero{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:48px;
+    align-items:stretch;
+    padding-bottom:64px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-body{display:flex;flex-direction:column;justify-content:center}
+  .hero-eyebrow{
+    font-size:11px;
+    letter-spacing:.3em;
+    color:var(--tomoshibi);
+    margin-bottom:20px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-size:clamp(30px,4vw,42px);
+    font-weight:500;
+    letter-spacing:.16em;
+    line-height:1.4;
+  }
+  h1 .romaji{
+    display:block;
+    font-family:var(--sans);
+    font-size:11px;
+    font-weight:300;
+    letter-spacing:.32em;
+    color:var(--muted);
+    margin-top:14px;
+  }
+  .hero-lead{
+    margin-top:28px;
+    max-width:52ch;
+    color:var(--ink);
+    font-size:15px;
+  }
+  .hero-lead strong{color:#ffffff;font-weight:500}
+
+  /* 肖像写真 + 縦書きの研究主題(シグネチャ) */
+  .hero-visual{display:flex;gap:24px;align-items:stretch}
+  .portrait{
+    width:220px;
+    aspect-ratio:3/4;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+    filter:grayscale(28%) contrast(1.02);
+  }
+  .portrait img{width:100%;height:100%;object-fit:cover;display:block}
+  .portrait .placeholder{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:10px;
+    color:var(--muted);
+    font-size:11px;
+    letter-spacing:.2em;
+  }
+  .portrait .placeholder span{
+    font-family:var(--serif);
+    font-size:56px;
+    color:rgba(238,241,243,.14);
+    letter-spacing:0;
+  }
+
+  /* ===== News ===== */
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:18px;
+    margin:64px 0 8px;
+  }
+  h2{
+    font-family:var(--serif);
+    font-size:21px;
+    font-weight:500;
+    letter-spacing:.24em;
+  }
+  .section-head .en{
+    font-size:10px;
+    letter-spacing:.3em;
+    color:var(--muted);
+  }
+  .news-list{list-style:none}
+  .news-list li{
+    display:grid;
+    grid-template-columns:110px 82px 1fr;
+    gap:20px;
+    padding:20px 4px;
+    border-bottom:1px solid var(--line);
+    align-items:baseline;
+  }
+  .news-date{
+    font-size:12.5px;
+    letter-spacing:.12em;
+    color:#c8cfd5;
+    font-variant-numeric:tabular-nums;
+  }
+  .news-tag{
+    font-size:10px;
+    letter-spacing:.2em;
+    color:var(--tomoshibi);
+    border:1px solid rgba(204,214,220,.4);
+    padding:2px 0;
+    text-align:center;
+  }
+  .news-text{font-size:14px}
+
+  /* ===== 汎用ページ ===== */
+  .page-title{
+    font-family:var(--serif);
+    font-size:clamp(26px,3vw,34px);
+    font-weight:500;
+    letter-spacing:.24em;
+    padding-bottom:28px;
+    border-bottom:1px solid var(--line);
+  }
+  .page-title .en{
+    display:block;
+    font-family:var(--sans);
+    font-size:10px;
+    letter-spacing:.34em;
+    color:var(--tomoshibi);
+    margin-bottom:16px;
+  }
+  h3{
+    font-family:var(--serif);
+    font-size:17px;
+    font-weight:500;
+    letter-spacing:.2em;
+    margin:52px 0 20px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  h3::after{content:"";flex:1;height:1px;background:var(--line)}
+  .prose p{margin-bottom:1.2em;color:var(--ink)}
+  .prose p.note{color:var(--muted);font-size:13px}
+
+  dl.plain{display:grid;grid-template-columns:150px 1fr;row-gap:14px;column-gap:24px}
+  dl.plain dt{color:var(--muted);font-size:13px;letter-spacing:.08em}
+  dl.plain dd{font-size:14px}
+
+  .timeline{list-style:none;border-left:1px solid var(--line);margin-left:6px}
+  .timeline li{position:relative;padding:0 0 30px 30px}
+  .timeline li::before{
+    content:"";
+    position:absolute;left:-3.5px;top:9px;
+    width:6px;height:6px;
+    background:var(--sumi);
+    border:1px solid var(--tomoshibi);
+    transform:rotate(45deg);
+  }
+  .timeline .when{font-size:12px;color:var(--muted);letter-spacing:.12em;display:block;margin-bottom:2px}
+  .timeline .what{font-size:14px}
+  .timeline .detail{font-size:12.5px;color:var(--muted);margin-top:2px}
+
+  .pub-list{list-style:none;counter-reset:pub}
+  .pub-list li{
+    counter-increment:pub;
+    display:grid;
+    grid-template-columns:44px 1fr;
+    gap:16px;
+    padding:22px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .pub-list li::before{
+    content:counter(pub,decimal-leading-zero);
+    font-family:var(--serif);
+    font-size:13px;
+    color:var(--muted);
+    padding-top:3px;
+  }
+  .pub-title{font-size:14.5px;line-height:1.8}
+  .pub-meta{font-size:12.5px;color:var(--muted);margin-top:4px;letter-spacing:.06em}
+  .pub-meta em{font-style:normal;color:var(--tomoshibi)}
+
+  .fund-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:26px 28px;
+    margin-bottom:18px;
+  }
+  .fund-card .fund-period{font-size:11px;letter-spacing:.2em;color:var(--tomoshibi);margin-bottom:8px}
+  .fund-card .fund-name{font-size:14.5px}
+  .fund-card .fund-role{font-size:12.5px;color:var(--muted);margin-top:6px}
+
+  /* ===== Working:カレンダー ===== */
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin:44px 0 16px}
+  .cal-title{font-family:var(--serif);font-size:20px;letter-spacing:.14em;font-variant-numeric:tabular-nums}
+  .cal-nav{display:flex;gap:8px}
+  .cal-nav button{
+    all:unset;cursor:pointer;
+    width:36px;height:36px;
+    display:grid;place-items:center;
+    border:1px solid var(--line);
+    color:var(--muted);font-size:16px;
+    transition:color .25s,border-color .25s;
+  }
+  .cal-nav button:hover{color:var(--ink);border-color:var(--tomoshibi)}
+  .cal-nav button:focus-visible{outline:1px solid var(--tomoshibi);outline-offset:2px}
+  .cal-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    border-top:1px solid var(--line);
+    border-left:1px solid var(--line);
+  }
+  .cal-dow{
+    padding:9px 0;text-align:center;
+    font-size:10px;letter-spacing:.22em;color:var(--muted);
+    background:var(--surface);
+    border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  .cal-cell{
+    min-height:96px;padding:8px;
+    border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  .cal-cell .d{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .cal-cell.dim{background:rgba(255,255,255,.015)}
+  .cal-cell.dim .d{color:rgba(185,193,199,.3)}
+  .cal-cell.today .d{
+    display:inline-grid;place-items:center;
+    width:20px;height:20px;
+    border:1px solid var(--tomoshibi);border-radius:50%;
+    color:var(--ink);
+  }
+  .cal-ev{
+    all:unset;cursor:pointer;box-sizing:border-box;
+    display:block;width:100%;
+    margin-top:6px;padding:4px 7px;
+    font-family:var(--sans);font-size:11px;line-height:1.5;
+    color:var(--ink);background:var(--surface-2);
+    border-left:2px solid var(--tomoshibi);
+    transition:background .2s;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .cal-ev:hover{background:#2b3036}
+  .cal-ev:focus-visible{outline:1px solid var(--tomoshibi);outline-offset:1px}
+
+  /* 月間予定リスト */
+  .ev-list{list-style:none}
+  .ev-list li{border-bottom:1px solid var(--line)}
+  .ev-row{
+    all:unset;cursor:pointer;box-sizing:border-box;
+    display:grid;grid-template-columns:110px 82px 1fr;gap:20px;
+    align-items:baseline;width:100%;padding:20px 4px;
+    font-family:var(--sans);
+    transition:background .2s;
+  }
+  .ev-row:hover{background:rgba(255,255,255,.02)}
+  .ev-row:focus-visible{outline:1px solid var(--tomoshibi);outline-offset:-1px}
+  .ev-date{font-size:12.5px;letter-spacing:.12em;color:#c8cfd5;font-variant-numeric:tabular-nums}
+  .ev-tag{
+    font-size:10px;letter-spacing:.2em;color:var(--tomoshibi);
+    border:1px solid rgba(204,214,220,.4);
+    padding:2px 0;text-align:center;
+  }
+  .ev-name{font-size:14px;color:var(--ink)}
+  .ev-empty{padding:24px 4px;color:var(--muted);font-size:13px}
+
+  /* ===== 詳細モーダル ===== */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:50;
+    background:rgba(8,9,10,.75);
+    display:none;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .modal-overlay.open{display:flex}
+  .modal{
+    position:relative;
+    background:var(--surface);
+    border:1px solid var(--line);
+    max-width:580px;width:100%;
+    max-height:88vh;overflow-y:auto;
+    padding:40px 40px 36px;
+  }
+  .modal-close{
+    all:unset;cursor:pointer;
+    position:absolute;top:12px;right:16px;
+    font-size:22px;color:var(--muted);
+    width:36px;height:36px;display:grid;place-items:center;
+  }
+  .modal-close:hover{color:var(--ink)}
+  .modal-close:focus-visible{outline:1px solid var(--tomoshibi)}
+  .modal-tag{
+    display:inline-block;
+    font-size:10px;letter-spacing:.24em;color:var(--tomoshibi);
+    border:1px solid rgba(204,214,220,.4);
+    padding:3px 14px;margin-bottom:16px;
+  }
+  .modal h4{
+    font-family:var(--serif);font-size:20px;font-weight:500;
+    letter-spacing:.1em;line-height:1.6;margin-bottom:20px;
+  }
+  .modal-meta{margin-bottom:20px}
+  .modal .desc{font-size:14px;color:var(--ink);line-height:1.9}
+  .btn-apply{
+    display:inline-block;margin-top:26px;
+    padding:13px 40px;
+    border:1px solid var(--tomoshibi);
+    color:var(--ink);font-size:13px;letter-spacing:.24em;
+    transition:background .25s,color .25s;
+  }
+  .btn-apply:hover{background:var(--tomoshibi);color:var(--sumi);text-decoration:none}
+  .apply-pending{margin-top:24px;font-size:13px;color:var(--muted)}
+  .form-embed{
+    display:block;width:100%;height:560px;
+    border:0;margin-top:26px;background:#fff;
+  }
+
+  /* ===== モバイル ===== */
+  @media (max-width:900px){
+    .layout{flex-direction:column}
+    .sidebar{
+      position:static;width:100%;height:auto;
+      padding:32px 24px 0;
+      border-right:none;border-bottom:1px solid var(--line);
+    }
+    .nav{
+      flex-direction:row;flex-wrap:wrap;
+      margin-top:24px;gap:0;
+      overflow-x:auto;
+    }
+    .nav button{border-left:none;border-bottom:1px solid transparent;padding:12px 14px}
+    .nav button.active{border-left:none;border-bottom-color:var(--tomoshibi);padding-left:14px}
+    .nav button .jp{display:none}
+    .sidebar-foot{display:none}
+    .inner{padding:48px 24px 72px}
+    .hero{grid-template-columns:1fr;gap:36px}
+    .hero-visual{justify-content:flex-start}
+    .portrait{width:min(220px,58vw)}
+    .news-list li{grid-template-columns:96px 1fr;grid-template-rows:auto auto}
+    .news-tag{grid-column:2;justify-self:start;padding:2px 10px}
+    .news-text{grid-column:1/-1}
+    dl.plain{grid-template-columns:1fr}
+    dl.plain dt{margin-top:8px}
+    .cal-cell{min-height:58px;padding:5px}
+    .cal-ev{display:none}
+    .cal-cell.has-ev::after{
+      content:"";display:block;
+      width:5px;height:5px;border-radius:50%;
+      background:var(--tomoshibi);
+      margin:6px auto 0;
+    }
+    .ev-row{grid-template-columns:96px 1fr;grid-template-rows:auto auto}
+    .ev-tag{grid-column:2;justify-self:start;padding:2px 10px}
+    .ev-name{grid-column:1/-1}
+    .modal{padding:32px 22px 28px}
+    .form-embed{height:70vh}
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ===================== サイドバー ===================== -->
+  <aside class="sidebar">
+    <div class="site-name"><a href="#" data-nav="home">櫻井 霞穏</a></div>
+    <div class="site-sub">死生学・グリーフケア</div>
+
+    <nav class="nav" aria-label="サイト内ナビゲーション">
+      <button data-nav="home" class="active">Home<span class="jp">主頁</span></button>
+      <button data-nav="profile">Profile<span class="jp">略歴</span></button>
+      <button data-nav="career">Career<span class="jp">経歴</span></button>
+      <button data-nav="article">Article<span class="jp">業績</span></button>
+      <button data-nav="funding">Funding<span class="jp">研究資金</span></button>
+      <button data-nav="working">Working<span class="jp">予定</span></button>
+    </nav>
+
+    <div class="sidebar-foot">
+      © 2026 Kanon Sakurai<br>
+      Last updated — 2026.07
+    </div>
+  </aside>
+
+  <!-- ===================== メイン ===================== -->
+  <main class="main">
+
+    <!-- ========== Home ========== -->
+    <section class="page visible" id="page-home">
+      <div class="inner">
+
+        <div class="hero">
+          <div class="hero-body">
+            <div class="hero-eyebrow">THANATOLOGY / GRIEF CARE</div>
+            <h1>櫻井 霞穏<span class="romaji">SAKURAI KANON</span></h1>
+            <p class="hero-lead">
+              死生学・グリーフケアを専攻。<strong>「関係的な死」</strong>という概念を手がかりに、
+              人は何をもって死を実感し、なぜ悲嘆するのかを問う理論的・実証的研究に取り組んでいます。
+            </p>
+          </div>
+
+          <div class="hero-visual">
+            <!--
+              ◆ 写真の差し替え方 ◆
+              下の <div class="placeholder">…</div> を削除し、
+              代わりに <img src="portrait.jpg" alt="櫻井霞穏の肖像写真"> を
+              .portrait の中に置いてください。
+            -->
+            <figure class="portrait">
+              <div class="placeholder">
+                <span>穏</span>
+                PORTRAIT
+              </div>
+            </figure>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <h2>News</h2><span class="en">RECENT ACTIVITIES</span>
+        </div>
+        <ul class="news-list">
+          <!-- 新しい活動は li を先頭にコピーして追記 -->
+          <li>
+            <span class="news-date">2026.07.01</span>
+            <span class="news-tag">研究</span>
+            <span class="news-text">研究計画書「『関係的な死』の概念に関する理論的研究」を改訂しました。(サンプル)</span>
+          </li>
+          <li>
+            <span class="news-date">2026.06.15</span>
+            <span class="news-tag">発表</span>
+            <span class="news-text">○○研究会にて「死者AIと死別悲嘆」に関する話題提供を行いました。(サンプル)</span>
+          </li>
+          <li>
+            <span class="news-date">2026.05.20</span>
+            <span class="news-tag">その他</span>
+            <span class="news-text">本ウェブサイトを公開しました。</span>
+          </li>
+        </ul>
+
+      </div>
+    </section>
+
+    <!-- ========== Profile ========== -->
+    <section class="page" id="page-profile">
+      <div class="inner">
+        <h1 class="page-title"><span class="en">PROFILE</span>略歴</h1>
+
+        <h3>基本情報</h3>
+        <dl class="plain">
+          <dt>氏名</dt><dd>櫻井 霞穏(さくらい かのん / Kanon)</dd>
+          <dt>学位</dt><dd>人間科学修士(2021年3月 大阪大学)</dd>
+          <dt>専門分野</dt><dd>死生学、グリーフケア、生命倫理</dd>
+          <dt>研究分野</dt><dd>人文・社会 / 教育心理学、教育工学</dd>
+          <dt>所属</dt><dd>ソフトバンク株式会社</dd>
+          <dt>連絡先</dt><dd>example@example.ac.jp ※要編集</dd>
+        </dl>
+
+        <h3>研究関心</h3>
+        <div class="prose">
+          <p>
+            故人を模倣し遺族と対話する「死者AI」への違和感を出発点として、
+            「人は何をもって死を実感するのか」という問いを探究しています。
+            悲嘆は死という現象そのものではなく、死による関係性の変化——
+            あるいはその予見——から生じるという仮説のもと、
+            「関係的な死」の概念的整理と、悲嘆を齎す要因の同定に取り組んでいます。
+          </p>
+          <p>
+            将来的には、遺される者と死にゆく者の双方をケアする
+            互恵的な終活方略への実践的応用を構想しています。
+          </p>
+          <p class="note">※ 文面はサンプルです。ご自身の言葉に差し替えてください。</p>
+        </div>
+
+        <h3>キーワード</h3>
+        <div class="prose">
+          <p>関係的な死 / 死別悲嘆 / 継続する絆 / あいまいな喪失 / 死者AI / スピリチュアルケア</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Career ========== -->
+    <section class="page" id="page-career">
+      <div class="inner">
+        <h1 class="page-title"><span class="en">CAREER</span>経歴</h1>
+
+        <h3>学歴</h3>
+        <ul class="timeline">
+          <li>
+            <span class="when">2019年4月 — 2021年3月</span>
+            <span class="what">大阪大学 大学院人間科学研究科</span>
+            <span class="detail">人間科学修士(2021年3月)</span>
+          </li>
+        </ul>
+
+        <h3>職歴・活動歴</h3>
+        <ul class="timeline">
+          <li>
+            <span class="when">2021年4月 — 現在</span>
+            <span class="what">ソフトバンク株式会社</span>
+          </li>
+          <li>
+            <span class="when">2019年10月 — 2020年3月</span>
+            <span class="what">大阪大学 大学院人間科学研究科 ティーチング・アシスタント(TA)</span>
+          </li>
+        </ul>
+
+        <h3>所属学会</h3>
+        <div class="prose">
+          <p>日本教育工学会(発表実績)ほか ※要編集</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Article ========== -->
+    <section class="page" id="page-article">
+      <div class="inner">
+        <h1 class="page-title"><span class="en">ARTICLE</span>業績</h1>
+
+        <h3>論文</h3>
+        <ol class="pub-list">
+          <li>
+            <div>
+              <div class="pub-title">「関係的な死」の概念に関する理論的研究 —— 悲嘆を齎す死の実感を決定付ける要因の考察</div>
+              <div class="pub-meta"><em>準備中</em> / 修士論文(予定)※サンプル</div>
+            </div>
+          </li>
+        </ol>
+
+        <h3>学会発表</h3>
+        <ol class="pub-list">
+          <li>
+            <div>
+              <div class="pub-title">同期型オンライン学習における疲労感にカメラの有無と学習者の公的自意識が与える影響</div>
+              <div class="pub-meta">青木霞穏 / 日本教育工学会 / 2021年3月7日</div>
+            </div>
+          </li>
+        </ol>
+
+        <h3>その他(講演・寄稿など)</h3>
+        <ol class="pub-list">
+          <li>
+            <div>
+              <div class="pub-title">タイトルをここに</div>
+              <div class="pub-meta">媒体・場所 / 20XX年○月 ※要編集</div>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ========== Funding ========== -->
+    <section class="page" id="page-funding">
+      <div class="inner">
+        <h1 class="page-title"><span class="en">FUNDING</span>研究資金</h1>
+
+        <h3>競争的資金</h3>
+        <div class="fund-card">
+          <div class="fund-period">大阪大学 未来共生プログラム</div>
+          <div class="fund-name">挑戦的研究助成</div>
+          <div class="fund-role">研究課題名・期間は必要に応じて追記してください</div>
+        </div>
+        <div class="prose">
+          <p class="note">※ 採択された助成・奨学金などを、上のカードをコピーして追記できます。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== Working ========== -->
+    <section class="page" id="page-working">
+      <div class="inner">
+        <h1 class="page-title"><span class="en">WORKING</span>講演・研修予定</h1>
+
+        <div class="cal-head">
+          <div class="cal-title" id="cal-title">—</div>
+          <div class="cal-nav">
+            <button id="cal-prev" type="button" aria-label="前の月へ">‹</button>
+            <button id="cal-next" type="button" aria-label="次の月へ">›</button>
+          </div>
+        </div>
+        <div class="cal-grid" id="cal-grid" aria-live="polite"></div>
+
+        <h3>この月の予定</h3>
+        <ul class="ev-list" id="ev-list"></ul>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===================== 予定詳細モーダル ===================== -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" id="modal-close" type="button" aria-label="閉じる">×</button>
+    <div class="modal-tag" id="modal-tag"></div>
+    <h4 id="modal-title"></h4>
+    <dl class="plain modal-meta">
+      <dt>日時</dt><dd id="modal-date"></dd>
+      <dt>会場</dt><dd id="modal-place"></dd>
+    </dl>
+    <p class="desc" id="modal-desc"></p>
+    <div id="modal-action"></div>
+  </div>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll("[data-nav]");
+  const pages = document.querySelectorAll(".page");
+
+  function show(id){
+    pages.forEach(p => p.classList.toggle("visible", p.id === "page-" + id));
+    buttons.forEach(b => {
+      if(b.tagName === "BUTTON") b.classList.toggle("active", b.dataset.nav === id);
+    });
+    window.scrollTo({top:0, behavior:"auto"});
+  }
+
+  buttons.forEach(b => b.addEventListener("click", e => {
+    e.preventDefault();
+    show(b.dataset.nav);
+  }));
+
+  /* ============================================================
+     ◆ 講演・研修の予定はここに追記 ◆
+     - date     : "YYYY-MM-DD"(必須)
+     - formUrl  : Googleフォームの「送信」→リンクのURLを貼る。
+                  空("")のままだと「申し込み受付は準備中です」と表示。
+     - embedForm: true にするとフォームを詳細画面の中に埋め込み表示、
+                  false だと「申し込みページへ」ボタン(別タブで開く)。
+  ============================================================ */
+  const EVENTS = [
+    {
+      date: "2026-07-25",
+      time: "14:00 – 16:00",
+      title: "グリーフケア基礎研修(サンプル)",
+      place: "オンライン(Zoom)",
+      tag: "研修",
+      desc: "死別悲嘆の基礎理論と支援の実際について概説します。対人援助職の方を対象としたサンプル記載です。",
+      formUrl: "",
+      embedForm: false
+    },
+    {
+      date: "2026-08-22",
+      time: "13:30 – 15:00",
+      title: "講演「関係的な死と悲嘆」(サンプル)",
+      place: "○○市民会館 小ホール",
+      tag: "講演",
+      desc: "人は何をもって死を実感するのか——「関係的な死」の視点から悲嘆の成り立ちを考えます。どなたでもご参加いただけます。",
+      formUrl: "",
+      embedForm: false
+    },
+    {
+      date: "2026-09-12",
+      time: "10:00 – 12:00",
+      title: "終活と死生観ワークショップ(サンプル)",
+      place: "○○大学 会議室",
+      tag: "WS",
+      desc: "遺される者と死にゆく者の双方をケアする終活のあり方を、ワーク形式で考えるサンプル企画です。",
+      formUrl: "",
+      embedForm: false
+    }
+  ];
+
+  /* ====== カレンダー描画 ====== */
+  const grid = document.getElementById("cal-grid");
+  const calTitle = document.getElementById("cal-title");
+  const evList = document.getElementById("ev-list");
+  const DOW = ["日","月","火","水","木","金","土"];
+  const now = new Date();
+  let cur = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const pad = n => String(n).padStart(2, "0");
+  const evOn = ds => EVENTS.filter(e => e.date === ds);
+
+  function renderCal(){
+    const y = cur.getFullYear(), m = cur.getMonth();
+    calTitle.textContent = y + "年" + (m + 1) + "月";
+    grid.innerHTML = "";
+
+    DOW.forEach(d => {
+      const el = document.createElement("div");
+      el.className = "cal-dow";
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+
+    const first = new Date(y, m, 1).getDay();
+    const days = new Date(y, m + 1, 0).getDate();
+    const prevDays = new Date(y, m, 0).getDate();
+    const total = Math.ceil((first + days) / 7) * 7;
+
+    for(let i = 0; i < total; i++){
+      const cell = document.createElement("div");
+      cell.className = "cal-cell";
+      let d, ds = null;
+
+      if(i < first){
+        d = prevDays - first + 1 + i;
+        cell.classList.add("dim");
+      }else if(i >= first + days){
+        d = i - (first + days) + 1;
+        cell.classList.add("dim");
+      }else{
+        d = i - first + 1;
+        ds = y + "-" + pad(m + 1) + "-" + pad(d);
+        const t = new Date();
+        if(y === t.getFullYear() && m === t.getMonth() && d === t.getDate()){
+          cell.classList.add("today");
+        }
+      }
+
+      const dn = document.createElement("span");
+      dn.className = "d";
+      dn.textContent = d;
+      cell.appendChild(dn);
+
+      if(ds){
+        const evs = evOn(ds);
+        if(evs.length) cell.classList.add("has-ev");
+        evs.forEach(ev => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "cal-ev";
+          b.textContent = ev.title;
+          b.addEventListener("click", () => openModal(ev));
+          cell.appendChild(b);
+        });
+      }
+      grid.appendChild(cell);
+    }
+    renderList(y, m);
+  }
+
+  function renderList(y, m){
+    const prefix = y + "-" + pad(m + 1);
+    const evs = EVENTS
+      .filter(e => e.date.startsWith(prefix))
+      .sort((a, b) => a.date.localeCompare(b.date));
+    evList.innerHTML = "";
+
+    if(!evs.length){
+      const li = document.createElement("li");
+      li.className = "ev-empty";
+      li.textContent = "この月の予定はありません。";
+      evList.appendChild(li);
+      return;
+    }
+    evs.forEach(ev => {
+      const li = document.createElement("li");
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "ev-row";
+
+      const dEl = document.createElement("span");
+      dEl.className = "ev-date";
+      dEl.textContent = ev.date.split("-").join(".");
+      const tEl = document.createElement("span");
+      tEl.className = "ev-tag";
+      tEl.textContent = ev.tag || "予定";
+      const nEl = document.createElement("span");
+      nEl.className = "ev-name";
+      nEl.textContent = ev.title;
+
+      b.append(dEl, tEl, nEl);
+      b.addEventListener("click", () => openModal(ev));
+      li.appendChild(b);
+      evList.appendChild(li);
+    });
+  }
+
+  /* ====== 詳細モーダル ====== */
+  const overlay = document.getElementById("modal-overlay");
+
+  function openModal(ev){
+    document.getElementById("modal-tag").textContent = ev.tag || "予定";
+    document.getElementById("modal-title").textContent = ev.title;
+    document.getElementById("modal-date").textContent =
+      ev.date.split("-").join(".") + (ev.time ? "　" + ev.time : "");
+    document.getElementById("modal-place").textContent = ev.place || "—";
+    document.getElementById("modal-desc").textContent = ev.desc || "";
+
+    const act = document.getElementById("modal-action");
+    act.innerHTML = "";
+
+    if(ev.formUrl){
+      if(ev.embedForm){
+        /* Googleフォームをモーダル内に埋め込み */
+        const f = document.createElement("iframe");
+        f.className = "form-embed";
+        f.src = ev.formUrl + (ev.formUrl.indexOf("?") >= 0 ? "&" : "?") + "embedded=true";
+        f.loading = "lazy";
+        f.title = "申し込みフォーム";
+        act.appendChild(f);
+      }else{
+        /* 別タブでGoogleフォームを開くボタン */
+        const a = document.createElement("a");
+        a.className = "btn-apply";
+        a.href = ev.formUrl;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = "申し込みページへ";
+        act.appendChild(a);
+      }
+    }else{
+      const p = document.createElement("p");
+      p.className = "apply-pending";
+      p.textContent = "申し込み受付は準備中です。";
+      act.appendChild(p);
+    }
+
+    overlay.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal(){
+    overlay.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  document.getElementById("modal-close").addEventListener("click", closeModal);
+  overlay.addEventListener("click", e => { if(e.target === overlay) closeModal(); });
+  document.addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
+
+  document.getElementById("cal-prev").addEventListener("click", () => {
+    cur = new Date(cur.getFullYear(), cur.getMonth() - 1, 1);
+    renderCal();
+  });
+  document.getElementById("cal-next").addEventListener("click", () => {
+    cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
+    renderCal();
+  });
+
+  renderCal();
+</script>
+
+</body>
+</html>
